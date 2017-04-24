@@ -5,10 +5,12 @@ class User < ApplicationRecord
 
   devise :registerable, :recoverable,
          :rememberable, :trackable, :validatable, :confirmable,
+         :omniauthable,
          :two_factor_authenticatable, :two_factor_backupable,
          otp_secret_encryption_key: ENV['OTP_SECRET'],
          otp_number_of_backup_codes: 10
 
+  has_one :qiita_account, dependent: :destroy
   belongs_to :account, inverse_of: :user, required: true
   accepts_nested_attributes_for :account
 
@@ -18,6 +20,7 @@ class User < ApplicationRecord
   scope :recent,    -> { order('id desc') }
   scope :admins,    -> { where(admin: true) }
   scope :confirmed, -> { where.not(confirmed_at: nil) }
+
 
   def send_devise_notification(notification, *args)
     devise_mailer.send(notification, self, *args).deliver_later
