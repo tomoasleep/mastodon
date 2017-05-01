@@ -14,6 +14,7 @@ COPY Gemfile Gemfile.lock package.json yarn.lock /mastodon/
 
 RUN echo "@edge https://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/repositories \
  && BUILD_DEPS=" \
+    cmake \
     postgresql-dev \
     libxml2-dev \
     libxslt-dev \
@@ -26,6 +27,7 @@ RUN echo "@edge https://nl.alpinelinux.org/alpine/edge/main" >> /etc/apk/reposit
     libpq \
     libxml2 \
     libxslt \
+    icu-dev \
     ffmpeg \
     file \
     imagemagick@edge \

@@ -11,6 +11,7 @@ class Formatter
 
   def format(status)
     return reformat(status.content) unless status.local?
+    return process_markdown(status.text).html_safe if markdown_mode?(status.text)
 
     html = status.text
     html = encode_and_link_urls(html)
@@ -149,5 +150,13 @@ class Formatter
     marks.reverse.reduce(html) do |html, (marker, block_html)|
       html.gsub(marker, block_html)
     end
+  end
+
+  def markdown_mode?(html)
+    !!html.match(/^!markdown\n/)
+  end
+
+  def process_markdown(html)
+    Qiita::Markdown::Processor.new(hostname: Rails.configuration.x.web_domain).call(html.sub(/^!markdown\n/, ''))[:output].to_s
   end
 end
