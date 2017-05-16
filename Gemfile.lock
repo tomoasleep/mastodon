@@ -124,6 +124,8 @@ GEM
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     crass (1.0.2)
+    ddtrace (0.7.1)
+      msgpack
     debug_inspector (0.0.2)
     devise (4.2.1)
       bcrypt (~> 3.0)
@@ -263,6 +265,7 @@ GEM
     multi_json (1.12.1)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
+    msgpack (1.1.0)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (4.1.0)
@@ -529,6 +532,7 @@ DEPENDENCIES
   capistrano-rbenv
   capistrano-yarn
   capybara
+  ddtrace
   devise
   devise-two-factor
   doorkeeper

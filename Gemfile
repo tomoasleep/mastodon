@@ -23,6 +23,7 @@ gem 'paperclip-av-transcoder'
 gem 'aws-sdk', '>= 2.0'
 
 gem 'addressable'
+gem 'ddtrace'
 gem 'devise'
 gem 'devise-two-factor'
 gem 'doorkeeper'
