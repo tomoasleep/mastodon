@@ -8,6 +8,10 @@ class Rack::Attack
     '127.0.0.1' == req.ip || '::1' == req.ip
   end
 
+  throttle('api_attack', limit: 300, period: 5.minutes) do |req|
+    req.ip if req.path =~ /\A\/\/+api\/v/
+  end
+
   # Rate limits for the API
   throttle('api', limit: 300, period: 5.minutes) do |req|
     req.ip if req.path =~ /\A\/api\/v/
