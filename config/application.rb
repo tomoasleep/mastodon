@@ -10,6 +10,7 @@ require_relative '../app/lib/exceptions'
 require_relative '../lib/paperclip/gif_transcoder'
 require_relative '../lib/paperclip/video_transcoder'
 require_relative '../lib/mastodon/version'
+require_relative '../lib/rack/real_ip'
 
 Dotenv::Railtie.load
 
@@ -76,6 +77,7 @@ module Mastodon
       end
     end
 
+    config.middleware.use Rack::RealIp
     config.middleware.use Rack::Attack
     config.middleware.use Rack::Deflater
 

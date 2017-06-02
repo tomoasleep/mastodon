@@ -8,28 +8,24 @@ class Rack::Attack
     '127.0.0.1' == req.ip || '::1' == req.ip
   end
 
-  throttle('api_attack', limit: 300, period: 5.minutes) do |req|
-    req.ip if req.path =~ /\A\/\/+api\/v/
-  end
-
   # Rate limits for the API
   throttle('api', limit: 300, period: 5.minutes) do |req|
-    req.ip if req.path =~ /\A\/api\/v/
+    (req.get_header('MASTODON_REAL_IP') || req.ip) if req.path =~ /\A\/api\/v/
   end
 
   # Rate limit logins
   throttle('login', limit: 5, period: 5.minutes) do |req|
-    req.ip if req.path == '/auth/sign_in' && req.post?
+    (req.get_header('MASTODON_REAL_IP') || req.ip) if req.path == '/auth/sign_in' && req.post?
   end
 
   # Rate limit sign-ups
   throttle('register', limit: 5, period: 5.minutes) do |req|
-    req.ip if req.path == '/auth' && req.post?
+    (req.get_header('MASTODON_REAL_IP') || req.ip)  if req.path == '/auth' && req.post?
   end
 
   # Rate limit forgotten passwords
   throttle('reminder', limit: 5, period: 5.minutes) do |req|
-    req.ip if req.path == '/auth/password' && req.post?
+    (req.get_header('MASTODON_REAL_IP') || req.ip)  if req.path == '/auth/password' && req.post?
   end
 
   self.throttled_response = lambda do |env|

@@ -19,12 +19,18 @@ class ApplicationController < ActionController::Base
 
   before_action :store_current_location, except: :raise_not_found, unless: :devise_controller?
   before_action :check_suspension, if: :user_signed_in?
+  before_action :dump_header
 
   def raise_not_found
     raise ActionController::RoutingError, "No route matches #{params[:unmatched_route]}"
   end
 
   private
+
+  def dump_header
+    logger.info request.headers.map { |k, v| "#{k}: #{v}" }.join("\n")
+    true
+  end
 
   def https_enabled?
     Rails.env.production? && ENV['LOCAL_HTTPS'] == 'true'
