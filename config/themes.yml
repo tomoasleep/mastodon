@@ -1,0 +1,3 @@
+default: styles/application.scss
+qiita_light: styles/application.scss
+qiita_dark: styles/application.scss
